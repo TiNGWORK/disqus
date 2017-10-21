@@ -2935,8 +2935,8 @@
             d
         };
         h("https://c.disquscdn.com/next/embed/styles/lounge.6320e20b57d877f77ba9dc866ff7fb10.css", "style"),
-        h("https://cdn.jsdelivr.net/gh/tingwork/disqus@1.01/common.bundle.js"),
-        h("https://cdn.jsdelivr.net/gh/tingwork/disqus@1.01/lounge.bundle.js"),
+        h("https://cdn.jsdelivr.net/gh/tingwork/disqus@1.03/common.bundle.js"),
+        h("https://cdn.jsdelivr.net/gh/tingwork/disqus@1.03/lounge.bundle.js"),
         h("https://disquscom.b0.upaiyun.com/next/config.js")
     }({})
 }(this),
