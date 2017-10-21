@@ -1160,7 +1160,7 @@
           , d = X
           , e = "default"
           , f = {
-            lounge: "/comments.html",
+            lounge: location.protocol+"//"+location.host+"/comments.html",
             home: "https://disquscom.b0.upaiyun.com/home/".replace("home/", "")
         }
           , h = function(a) {
