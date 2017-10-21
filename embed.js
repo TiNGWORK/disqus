@@ -1160,7 +1160,7 @@
           , d = X
           , e = "default"
           , f = {
-            lounge: "https://cdn.jsdelivr.net/gh/tingwork/disqus@2.01/embed/comments.html",
+            lounge: "/comments.html",
             home: "https://disquscom.b0.upaiyun.com/home/".replace("home/", "")
         }
           , h = function(a) {
