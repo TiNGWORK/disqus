@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html lang="zh" dir="ltr" class="ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh" dir="ltr" class="ie9"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="zh" dir="ltr"><!--<![endif]-->
+<head>
+<title>Disqus 评论</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<style>.alert--warning{border-radius:3px;padding:10px 15px;margin-bottom:10px;background-color:#FFE070;color:#A47703;}.alert--warning a,.alert--warning a:hover,.alert--warning strong{color:#A47703;font-weight:bold;}.alert--error p,.alert--warning p{margin-top:5px;margin-bottom:5px;}</style>
+<style>html{overflow:hidden;}#error{display:none;}.clearfix:after{content:"";display:block;height:0;clear:both;visibility:hidden;}</style>
+</head>
+<body>
+<div id="error" class="alert--error">
+<p>Disqus 无法加载。如果您是管理员，请参阅<a href="https://docs.disqus.com/help/83/">故障排除指南</a>。</p>
+</div>
+<script type="text/json" id="disqus-forumData"></script>
+<script type="text/json" id="disqus-threadData">{"cursor":{"hasPrev":false,"prev":null,"total":3,"hasNext":false,"next":"1:0:0"},"code":0,"response":{"lastModified":1508606909,"posts":[],"thread":{"feed":"https://iamxiazi.disqus.com/itui_tumblr_34/latest.rss","author":"34516497","dislikes":0,"likes":1,"message":"","isSpam":false,"createdAt":"2016-05-08T12:13:13","category":"1886397","clean_title":"IT\u4e50\u5427\u4f7f\u7528\u5168\u65b0UI  \u8fc1\u535a\u81f3tumblr","id":"4809415209","signedLink":"https://disq.us/?url=https%3A%2F%2Fwww.it68.com.cn%2F2015%2F05%2F03%2Fit68-new-ui-rebuild-and-move-to-tumblr%2F&key=oaOfpsqlvAoCcLov53Cnpg","isDeleted":false,"hasStreaming":false,"raw_message":"","isClosed":false,"link":"https://www.it68.com.cn/2015/05/03/it68-new-ui-rebuild-and-move-to-tumblr/","slug":"itui_tumblr_34","forum":"iamxiazi","identifiers":["25","2015/05/03/it68-new-ui-rebuild-and-move-to-tumblr/"],"posts":3,"moderators":[34516497],"validateAllPosts":false,"title":"IT\u4e50\u5427\u4f7f\u7528\u5168\u65b0UI  \u8fc1\u535a\u81f3tumblr","highlightedPost":null}},"order":"popular"}</script>
+<div id="fixed-content"></div>
+<script type="text/json" id="disqus-urls">{"root":"//disqus.com", "next":"https://c.disquscdn.com/next/current/embed"}</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/jquery/jquery@1.12.1/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	window.forum_id = decodeURIComponent(location.search.match(/[&?]f=([^&]+)/)[1]);
+	window.post_url = decodeURIComponent(location.search.match(/[&?]t_u=([^&]+)/)[1]);
+	window.appkey = 'E8Uh5l5fHZ6gD8U3KycjAIAk46f68Zw7C6eW8WSjZvCLXebZ7p0r1yrYDrLilk2F';
+
+	window.disqus_comments_load = function(json) {
+	};
+
+	window.disqus_thread_load = function(callback) {
+		console.log(window.load_more_thread);
+		if('undefined' == typeof window.load_more_thread) {
+			window.load_more_thread = function(time){
+                                    $.ajax({
+                                             url: 'https://disquscom.b0.upaiyun.com/api/3.0/forums/listThreads.json',
+                                             type: 'GET',
+                                             dataType: 'jsonp',
+                                             data: {
+                                                    since: time,
+                                                    limit: 100,
+                                                    forum: window.forum_id,
+                                                    api_key: window.appkey
+                                             },
+                                             success: function(json){
+                                                    var result = callback(json);
+                                                    console.log(result);
+                                                    if(!result.ok && result.time != '') {
+                                                            window.load_more_thread(result.time);
+                                                    }
+                                             }
+                                    });
+			};
+                 }
+                 window.load_more_thread('');
+	};
+
+	window.disqus_thread_id = function(callback) {
+		if('undefined' == typeof window.localStorage || 'undefined' == typeof window.localStorage['disqus_url2id'+window.post_url]) {
+			window.disqus_thread_load(function(json){
+				var last_time = '';
+				for(var i = 0; i < json.response.length; i++){
+					var item = json.response[i];
+					if('undefined' !== typeof window.localStorage) {
+						window.localStorage['disqus_url2id'+item.link] = item.id;
+					}
+					if(item.link == window.post_url){
+						window.thread_id = item.id;
+						callback();
+						return {
+							ok: 1,
+							time: ''
+						};
+						break;
+					}
+					last_time = item.createdAt;
+				}
+				return {
+					ok: 0,
+					time: last_time
+				};
+			});
+		} else {
+			window.thread_id = window.localStorage['disqus_url2id'+window.post_url];
+			callback();
+		}
+	};
+
+	window.disqus_default_guest = function() {
+		jQuery('body').on('focus', 'input[name="display_name"]', function(e) {
+			setTimeout(function(){
+				jQuery('input[name="author-guest"]').prop('checked', true);
+				jQuery('.guest').addClass('is-guest');
+			}, 100);
+		});
+	};
+
+	window.disqus_reload = function() {
+		$('a[data-sort="popular"]').click();
+	};
+
+	window.disqus_open = function() {
+		window.disqus_thread_id(function(){
+			setTimeout(window.disqus_reload, 1000);
+		});
+		window.disqus_default_guest();
+	};
+	window.disqus_open();
+</script>
+<script src="https://cdn.jsdelivr.net/gh/tingwork/disqus@2.01/lounge.load.js"></script>
+</body>
+</html>
